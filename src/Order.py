@@ -36,7 +36,6 @@ class Order:
 
     def create_signature(self, nonce, url, body):
         message = "{}{}{}".format(nonce, url, body)
-        print(message)
         return hmac.new(bytes(self.secret_key, 'utf-8'), bytes(message, 'utf-8'), hashlib.sha256).hexdigest()
 
 
