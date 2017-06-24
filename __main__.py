@@ -50,6 +50,7 @@ def order_test(key, secret):
 
 # CoinCheck の transactions エンドポイントは 25個分までしか取得ができない (limit指定しないと50取得するけど...)
 
+
 if __name__ == '__main__':
     # sys.argv[1] => api access key
     # sys.argv[2] => api secret key
