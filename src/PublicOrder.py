@@ -4,10 +4,16 @@ from src.CoinCheckBase import CoinCheckBase
 
 
 class PublicOrder(CoinCheckBase):
+    """
+    Public API
+    取引所の注文状況や公開されている取引の履歴、板情報を参照することができます。
+    https://coincheck.com/ja/documents/exchange/api#public
+    """
 
     def get_ticker(self):
         """
         各種最新情報を簡易に取得することができます。
+        https://coincheck.com/ja/documents/exchange/api#ticker
         :return:
         {
           "last": 27390,            last 最後の取引の価格
@@ -26,6 +32,7 @@ class PublicOrder(CoinCheckBase):
     def get_trades(self):
         """
         最新の取引履歴を取得できます。
+        https://coincheck.com/ja/documents/exchange/api#public-trades
         :return:
         [
           {
@@ -51,6 +58,7 @@ class PublicOrder(CoinCheckBase):
     def get_order_books(self):
         """
         板情報を取得できます。
+        https://coincheck.com/ja/documents/exchange/api#order-book
         :return:
         asks 売り注文の情報
         bids 買い注文の情報
@@ -84,6 +92,7 @@ class PublicOrder(CoinCheckBase):
     def get_rate(self, order_type, pair="btc_jpy", amount=0, price=0):
         """
         取引所の注文を元にレートを算出します。
+        https://coincheck.com/ja/documents/exchange/api#order-rate
         :param order_type:  *order_type 注文のタイプ（"sell" or "buy"）
         :param pair:        *pair 取引ペア。現在は "btc_jpy" のみです。
         :param amount:      amount 注文での量。（例）0.1
@@ -110,6 +119,7 @@ class PublicOrder(CoinCheckBase):
     def get_rate_pair(self, pair="btc_jpy"):
         """
         販売所のレートを取得します。
+        https://coincheck.com/ja/documents/exchange/api#buy-rate
         :param pair:    *pair 通貨ペア
         ( "btc_jpy" "eth_jpy" "etc_jpy" "dao_jpy" "lsk_jpy" "fct_jpy" "xmr_jpy" "rep_jpy"
           "xrp_jpy" "zec_jpy" "xem_jpy" "ltc_jpy" "dash_jpy" "eth_btc" "etc_btc" "lsk_btc"
