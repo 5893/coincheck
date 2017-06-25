@@ -1,6 +1,7 @@
 # coding: utf-8
 
 import sys
+from datetime import datetime as dt
 
 from src.Model.PublicTradeModel import PublicTradeModel
 from src.PrivateOrder import PrivateOrder
@@ -9,57 +10,26 @@ from src.TransactionParser import TransactionParser
 
 
 def main(key, secret, mysql_pass):
-    # order_ex(key, secret)
-    # public_order_ex(key, secret)
-    public_trade_model_ex(mysql_pass)
+    get_and_save_public_trades(key, secret, mysql_pass)
 
 
-def public_trade_model_ex(password):
-    p_trade_model = PublicTradeModel(password)
-
-    result = p_trade_model.select_trades(10)
-    print(result)
-
-
-def public_order_ex(key, secret):
+def get_and_save_public_trades(key, secret, mysql_pass):
     p_order = PublicOrder(key, secret)
-    # ticker
-    result = p_order.get_ticker()
-    for key in result.keys():
-        print("{key} = {value}".format(key=key.ljust(10), value=result[key]))
-    # trades
-    result = p_order.get_trades()
-    print("{} = {}".format("trade len".ljust(10), len(result)))
-    for trade in result:
-        for key in trade.keys():
-            print("{key} = {value}".format(key=key.ljust(10), value=trade[key]))
+    pt_model = PublicTradeModel(mysql_pass)
 
+    # request trades
+    trades = p_order.get_trades()
+    print("{} = {}".format("get trade count".ljust(10), len(trades)))
 
-def order_ex(key, secret):
-    order = PrivateOrder(key, secret)
-    result = order.get_my_transactions()
-
-    parser = TransactionParser()
-
-    rate_average = parser.get_rate_average(result["transactions"])
-    print("rate average my transactions = {}".format(rate_average))
-
-    rate_average_on_sell = parser.get_rate_average_on_sell(result["transactions"])
-    print("rate average on sell = {}".format(rate_average_on_sell))
-
-    rate_average_on_buy = parser.get_rate_average_on_buy(result["transactions"])
-    print("rate average on buy  = {}".format(rate_average_on_buy))
-
-    sales = parser.get_sales(result["transactions"])
-    print("{} = {} JPY".format("sales".ljust(15), sales))
-
-    purchase = parser.get_purchase(result["transactions"])
-    print("{} = {} JPY".format("purchase".ljust(15), purchase))
-
-    gain = parser.get_gain(result["transactions"])
-    print("{} = {} JPY".format("current gain".ljust(15), gain))
-
-# CoinCheck の transactions エンドポイントは 25個分までしか取得ができない (limit指定しないと50取得するけど...)
+    # save trades
+    inserted_ids = []
+    for trade in trades:
+        trade['created_at'] = dt.strptime(trade['created_at'].replace('.000Z', 'UTC'), '%Y-%m-%dT%H:%M:%S%Z')
+        trade['amount'] = float(trade['amount'])
+        inserted_id = pt_model.insert_trade(trade)
+        if inserted_id > 0:
+            inserted_ids.append(inserted_id)
+    print("{} = {}".format("saved count".ljust(10), len(inserted_ids)))
 
 
 if __name__ == '__main__':
