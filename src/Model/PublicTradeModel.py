@@ -6,6 +6,9 @@ from src.Model.Connector import Connector
 
 
 class PublicTradeModel(Connector):
+    """
+    取引履歴テーブル
+    """
 
     def __init__(self, password):
         """
@@ -16,16 +19,16 @@ class PublicTradeModel(Connector):
             cnx = self._get_connector()
             cursor = cnx.cursor()
 
-            add_trade = (
+            create_trade_table = (
                 "CREATE TABLE IF NOT EXISTS `public_trades` ("
                     "`id` int unsigned NOT NULL,"
                     "`amount` double(20,13) NOT NULL,"
-                    "`rate` double(20, 11) NOT NULL,"
+                    "`rate` int NOT NULL,"
                     "`order_type` varchar(5) NOT NULL,"
                     "`created_at` datetime NOT NULL,"
                     "PRIMARY KEY (`id`)"
                 ") ENGINE=InnoDB DEFAULT CHARSET=utf8")
-            cursor.execute(add_trade)
+            cursor.execute(create_trade_table)
             cursor.close()
 
         except mysql.connector.Error as err:
@@ -40,7 +43,7 @@ class PublicTradeModel(Connector):
         :param trades = {
                             'id':           int,
                             'amount':       double,
-                            'rate':         double,
+                            'rate':         int,
                             'order_type':   string,
                             'created_at':   class datetime.datetime
                         }:
@@ -74,7 +77,7 @@ class PublicTradeModel(Connector):
         :param trades = [{
                             'id':           int,
                             'amount':       double,
-                            'rate':         double,
+                            'rate':         int,
                             'order_type':   string,
                             'created_at':   class datetime.datetime
                         },]:
@@ -121,25 +124,3 @@ class PublicTradeModel(Connector):
         select_trades = ("SELECT * FROM public_trades "
                          "WHERE created_at BETWEEN %s AND %s")
         return self._select(select_trades, (start_time, end_time))
-
-
-    def _select(self, sql, data = ()):
-        trades = []
-        try:
-            cnx = self._get_connector()
-            cursor = cnx.cursor()
-
-            cursor.execute(sql, data)
-            rows = cursor.fetchall()
-
-            for row in rows:
-                trades.append(row)
-
-            cursor.close()
-
-        except mysql.connector.Error as err:
-            self._print_connector_error(err)
-        finally:
-            cnx.close()
-            return trades
-
