@@ -3,25 +3,25 @@
 import sys
 
 from src.Model.PublicTradeModel import PublicTradeModel
-from src.Order import Order
+from src.PrivateOrder import PrivateOrder
 from src.PublicOrder import PublicOrder
 from src.TransactionParser import TransactionParser
 
 
 def main(key, secret, mysql_pass):
-    # order_test(key, secret)
-    # public_order_test(key, secret)
-    public_trade_model_test(mysql_pass)
+    # order_ex(key, secret)
+    # public_order_ex(key, secret)
+    public_trade_model_ex(mysql_pass)
 
 
-def public_trade_model_test(password):
+def public_trade_model_ex(password):
     p_trade_model = PublicTradeModel(password)
 
     result = p_trade_model.select_trades(10)
     print(result)
 
 
-def public_order_test(key, secret):
+def public_order_ex(key, secret):
     p_order = PublicOrder(key, secret)
     # ticker
     result = p_order.get_ticker()
@@ -35,8 +35,8 @@ def public_order_test(key, secret):
             print("{key} = {value}".format(key=key.ljust(10), value=trade[key]))
 
 
-def order_test(key, secret):
-    order = Order(key, secret)
+def order_ex(key, secret):
+    order = PrivateOrder(key, secret)
     result = order.get_my_transactions()
 
     parser = TransactionParser()
