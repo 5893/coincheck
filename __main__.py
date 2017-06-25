@@ -1,13 +1,24 @@
 # coding: utf-8
 
 import sys
+
+from src.Model.PublicTradeModel import PublicTradeModel
 from src.Order import Order
 from src.PublicOrder import PublicOrder
 from src.TransactionParser import TransactionParser
 
-def main(key, secret):
+
+def main(key, secret, mysql_pass):
     # order_test(key, secret)
-    public_order_test(key, secret)
+    # public_order_test(key, secret)
+    public_trade_model_test(mysql_pass)
+
+
+def public_trade_model_test(password):
+    p_trade_model = PublicTradeModel(password)
+
+    result = p_trade_model.select_trades(10)
+    print(result)
 
 
 def public_order_test(key, secret):
@@ -54,4 +65,5 @@ def order_test(key, secret):
 if __name__ == '__main__':
     # sys.argv[1] => api access key
     # sys.argv[2] => api secret key
-    main(str(sys.argv[1]), str(sys.argv[2]))
+    # sys.argv[3] => mysql password
+    main(str(sys.argv[1]), str(sys.argv[2]), str(sys.argv[3]))

@@ -7,10 +7,12 @@ class Order(CoinCheckBase):
 
     def new_market_ordr(self, order_type, amount):
         url = "{}/api/exchange/orders".format(self.uri)
+        pass
 
 
     def new_limit_order(self, order_type, rate, amount):
         url = "{}/api/exchange/orders".format(self.uri)
+        pass
 
 
     def get_my_transactions(self):

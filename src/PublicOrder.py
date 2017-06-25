@@ -131,3 +131,9 @@ class PublicOrder(CoinCheckBase):
         """
         url = "{}/api/rate/{}".format(self.uri, pair)
         return self._request_to_coincheck('GET', url=url)
+
+
+if __name__ == '__main__':
+    api_key = "API_KEY"
+    secret_key = "API_SECRET"
+    public_order = PublicOrder(api_key, secret_key)

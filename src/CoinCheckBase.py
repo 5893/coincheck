@@ -12,9 +12,11 @@ class CoinCheckBase:
     _api_key = ""
     _secret_key = ""
 
+
     def __init__(self, api_key, secret_key):
         self._api_key = api_key
         self._secret_key = secret_key
+
 
     def _request_to_coincheck(self, method, url, data={}):
         nonce = str(int(datetime.now().timestamp()))
@@ -39,6 +41,7 @@ class CoinCheckBase:
     def _create_signature(self, nonce, url, body):
         message = "{}{}{}".format(nonce, url, body)
         return hmac.new(bytes(self._secret_key, 'utf-8'), bytes(message, 'utf-8'), hashlib.sha256).hexdigest()
+
 
 if __name__ == '__main__':
     api_key = "API_KEY"
