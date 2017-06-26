@@ -1,7 +1,9 @@
 # coding: utf-8
 
-import sys
-sys.path.append('..')
+import sys, os
+current_dir = os.path.abspath(os.path.dirname(__file__))
+parent_dir = os.path.abspath(os.path.join(current_dir, os.pardir))
+sys.path.append(parent_dir)
 
 from datetime import datetime as dt
 
