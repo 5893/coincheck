@@ -1,6 +1,8 @@
 # coding: utf-8
 
 import sys
+sys.path.append('..')
+
 from datetime import datetime as dt
 
 from src.Model.OrderBookModel import OrderBookModel

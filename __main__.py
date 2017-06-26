@@ -11,7 +11,6 @@ from src.TransactionParser import TransactionParser
 
 
 def main(key, secret, mysql_pass):
-    # 
     pass
 
 
