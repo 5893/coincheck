@@ -29,7 +29,7 @@ class Connector:
         result = []
         try:
             cnx = self._get_connector()
-            cursor = cnx.cursor()
+            cursor = cnx.cursor(dictionary=True)
 
             cursor.execute(sql, data)
             rows = cursor.fetchall()

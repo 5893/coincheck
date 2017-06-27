@@ -21,7 +21,7 @@ class OrderBookModel(Connector):
 
             create_order_book_table = (
                 "CREATE TABLE IF NOT EXISTS `order_books` ("
-                "`id` int(11) unsigned NOT NULL AUTO_INCREMENT,"
+                "`id` int unsigned NOT NULL AUTO_INCREMENT,"
                 "`side` varchar(5) NOT NULL,"
                 "`rate` int NOT NULL,"
                 "`amount` double(20,13) NOT NULL,"
@@ -90,6 +90,29 @@ class OrderBookModel(Connector):
         select_books = ("SELECT * FROM order_books "
                          "WHERE created_at BETWEEN %s AND %s")
         return self._select(select_books, (start_time, end_time))
+
+
+    def select_training_data(self, side, start_time, end_time):
+        """
+        指定時間, 指定サイド(売買)の最大、最小レート、量の和を返す
+        :param start_time:  class datetime.datetime
+        :param end_time:    class datetime.datetime
+        :return:
+        """
+        select_data = ("select max(rate), min(rate), sum(amount) "
+                       "from order_books where side = %s "
+                       "and created_at >= %s and %s > created_at")
+        return self._select(select_data, (side, start_time, end_time))
+
+
+    def get_most_old_time(self):
+        """
+        最も古いデータの時間を取得する
+        :return:
+        """
+        select_data = ("SELECT created_at FROM order_books "
+                       "ORDER BY created_at ASC LIMIT 1")
+        return self._select(select_data, ())
 
 
     @staticmethod
