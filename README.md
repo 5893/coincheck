@@ -1,6 +1,5 @@
-# checkcoin
+# coincheck
 
-checkcoin じゃなくて coincheck だった。
-間違えた。。。
+今のところやっていること
 
-coincheck API で取得したデータをMySQLに保存する
+- coincheck API で取得したデータをMySQLに保存する
